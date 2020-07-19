@@ -23,7 +23,7 @@ class SignUp extends Component {
     return (  
       <div className='body-signUp'>
         <div className='container'>
-          <h1>Sign in</h1>
+          <h2>Sign in</h2>
           <div className='notation'>Please enter you login</div>           
             <div className='login-form'>              
               <input  type='text' name='name' placeholder='enter your login'

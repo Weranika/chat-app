@@ -62,15 +62,15 @@ class App extends React.Component {
   }
 
   noLoginClick() {   
-    this.setState({isLoggedIn: false, login: ''});    
+    this.setState({isLoggedIn: false, login: ''});      
   } 
 
   render() {    
-    const isLoggedIn = this.state.isLoggedIn;    
+    const isLoggedIn = this.state.isLoggedIn;   
     if (isLoggedIn) {            
       return (        
         <ChatPage messages={this.state.messages} 
-                  login={this.props.login}
+                  login={this.state.login}
                   sendCallback={this.sendMessage}
         />        
       );

@@ -8,7 +8,7 @@ class Input extends Component {
     }
 
     handleChange = (event) => {    
-      this.setState({myMessage: event.target.value});
+      this.setState({myMessage: event.target.value});      
     };
 
     handleSubmit(event) {
@@ -17,7 +17,7 @@ class Input extends Component {
           from: this.props.login,
           message: this.state.myMessage
       })     
-      
+      this.setState({myMessage: ''});
     }
   
     render() {   
@@ -25,7 +25,7 @@ class Input extends Component {
           <div className='massage-field'>
             <form onSubmit={this.handleSubmit}>
               <input className='message-input' type='text' name='message' 
-              placeholder='enter message' value={this.state.myMessage} 
+              placeholder='enter message' value={this.state.myMessage} autoComplete='off'
               onChange={this.handleChange}/>
               <button className='send'>Send</button>     
             </form>   

@@ -18,9 +18,19 @@ class Aside extends Component {
   render() {   
     return (        
       <aside>
-        <div className='chat-users'>Chat users</div>
+        <h4 className='chat-users'>Chat users</h4>
         <ul>
-          {Array.from(this.list).map(function(item, i){   
+          {Array.from(this.list).sort(function(a, b){
+            let nameA = a.toLowerCase(), nameB = b.toLowerCase()
+            if (nameA < nameB) {
+              return -1;
+            }              
+            if (nameA > nameB)
+            {
+              return 1;
+            }              
+            return 0;
+            }).map(function(item, i){   
             return <li key={i}>{item}</li>
           })}
         </ul>        

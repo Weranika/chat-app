@@ -12,25 +12,31 @@ aside {
     text-shadow: rgb(91, 116, 172) 3px 0;    
 }    
 ul {
-    overflow-y:scroll;
+    height: 85%;
     overflow-y: auto;
 }
 ul::-webkit-scrollbar {
-    width: 6px;
+    width: 7px;
 }
 ul::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.4); 
+    -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.4); 
     border-radius: 10px;
+}
+ul::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.5); 
 }
 li {
     list-style-type: none;
-    height: 6vh;
+    min-height: 6vh;
+    height: auto;
     margin: 10px;
     background-color: #fff;
     border-radius: 6px;
     font-weight: 700;
     box-sizing: border-box;
     padding: 11px 0 0 16px;
+    word-break: break-word;
 }
 
 @media screen and (max-width: 750px) and (min-width: 500px) {    
@@ -38,9 +44,7 @@ li {
         padding: 20px 8px 7px;
         font-size: 1.1em;
     }    
-    li {        
-        height: 5vh;
-        margin: 10px;   
+    li {   
         padding: 11px 0 0 16px;
     }
 }
@@ -49,9 +53,7 @@ li {
         padding: 20px 8px 7px;
         font-size: 0.75em;
     }    
-    li {
-        height: 5vh;
-        margin: 10px;
+    li {        
         padding: 11px 0 0 7px;
         overflow-x: hidden;
         font-size: 0.7em;

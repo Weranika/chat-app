@@ -2,17 +2,21 @@ import React, { Component } from 'react';
 
 class MessageItem extends Component {
     constructor(props) {
-        super(props);
+        super(props);       
     }
-  
+    
     render() {   
         return (        
-            <section className='enter-message-container'>
-              <div className='user-data'>
+            <section className={this.props.login == this.props.msg.from?
+              'enter-message-container outer-message-container ':
+              'enter-message-container'}>              
+              <div className={'user-data '}>
                 <h3>{this.props.msg.from}</h3>
                 <div className='date'>{new Date(+this.props.msg.time).toLocaleString()}</div>
               </div>            
-              <div className='enter-message message-container'>{this.props.msg.message}</div>
+              <div className={this.props.login == this.props.msg.from?
+              'message-container outer-message':
+              'message-container'}>{this.props.msg.message}</div>
             </section>
         )
     }

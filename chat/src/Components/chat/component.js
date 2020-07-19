@@ -6,6 +6,8 @@ import Main from './main/component';
 class ChatPage extends Component {
   constructor(props) {
     super(props);
+    console.log("ChatPage:");
+    console.log(this.props);
   }
 
   render() {   

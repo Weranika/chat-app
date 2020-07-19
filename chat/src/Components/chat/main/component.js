@@ -11,10 +11,11 @@ class Main extends Component {
   render() {   
     return (
       <main>
-        <h2 className='account'>Hello {this.props.login}</h2>
+        <h1 className='account'>Hello {this.props.login}</h1>
         <div className='chat'>                 
           {this.props.messages.map((item)=> {           
-            return <MessageItem key={item.id} msg={(
+            return <MessageItem key={item.id} login={this.props.login} 
+              msg={(
                 {
                   from : item.from, 
                   time : item.time, 
