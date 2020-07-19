@@ -1,0 +1,59 @@
+aside {
+    width: 25%;
+    height: 100%;
+    background-color: rgb(206, 206, 206);
+    color: rgb(65, 62, 62);    
+}
+.chat-users {
+    padding: 20px 20px 7px;
+    color: #fff;
+    font-size: 1.5em;
+    font-weight: 700;
+    text-shadow: rgb(91, 116, 172) 3px 0;    
+}    
+ul {
+    overflow-y:scroll;
+    overflow-y: auto;
+}
+ul::-webkit-scrollbar {
+    width: 6px;
+}
+ul::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.4); 
+    border-radius: 10px;
+}
+li {
+    list-style-type: none;
+    height: 6vh;
+    margin: 10px;
+    background-color: #fff;
+    border-radius: 6px;
+    font-weight: 700;
+    box-sizing: border-box;
+    padding: 11px 0 0 16px;
+}
+
+@media screen and (max-width: 750px) and (min-width: 500px) {    
+    .chat-users {
+        padding: 20px 8px 7px;
+        font-size: 1.1em;
+    }    
+    li {        
+        height: 5vh;
+        margin: 10px;   
+        padding: 11px 0 0 16px;
+    }
+}
+@media screen and (max-width: 499px) {    
+    .chat-users {
+        padding: 20px 8px 7px;
+        font-size: 0.75em;
+    }    
+    li {
+        height: 5vh;
+        margin: 10px;
+        padding: 11px 0 0 7px;
+        overflow-x: hidden;
+        font-size: 0.7em;
+    }
+}

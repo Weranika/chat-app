@@ -1,0 +1,75 @@
+.body-signUp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;  
+    color: rgb(26, 26, 26);
+    font-family: Helvetica, sans-serif;
+    width: 100%;  
+    height: 100vh;  
+    background: url(../../images/cloud.png) no-repeat 93% -8%;
+  }
+  .container {
+    min-height: 36vh;
+    min-width: 45vw;
+    background-color: #fafafa;
+    border-radius: 32px;
+    box-shadow: 0 0px 6px #fff;  
+    box-sizing: border-box;
+  }
+  h1 {
+    color: #162870; 
+    letter-spacing: 0.8px;
+    padding: 4vh 0;
+    margin: 0;
+    font-size: 3rem;
+  }
+  .notation {
+    color: #545555;
+    font-family: 'Calibiri';  
+    font-size: 1.6em;
+  }
+  form {
+    display: inline;
+    color: #222222;
+    letter-spacing: 0.8px;
+  }
+  .login-form {
+    display: flex;  
+    justify-content: center;  
+    margin-top: 18px;
+  }
+  input {
+    width: 45%;
+    height: 1.5em;
+    border-radius: 7px;
+    padding: 5px 10px;
+    border: 1px solid #6b84eb;
+    letter-spacing: 1.5px;
+    color: #545555;
+  }
+  input:focus { 
+    border: 1px solid #6b84eb;
+    letter-spacing: 1.5px;  
+    outline: none;
+  }
+  .go-to-chat {
+    height: 4.5rem;  
+    width: 10em;
+    border-radius: 10px;
+    border: none;
+    background-color: rgb(126, 126, 126);
+    color: #fff;
+    font-size: 2em;
+    cursor: pointer;
+    box-shadow:0 0px 20px 9px #fff;
+    position: relative;
+    top: 2.3rem;
+  }
+  .go-to-chat:hover {
+    background-color:#3950a8;
+    box-shadow: 0 0 28px rgb(178, 213, 255);
+  }
+  button:focus, button:active { 
+    outline: none;
+  }
