@@ -5,15 +5,13 @@ import Main from './main/component';
 
 class ChatPage extends Component {
   constructor(props) {
-    super(props);
-    console.log("ChatPage:");
-    console.log(this.props);
+    super(props);    
   }
-
+  
   render() {   
     return (      
-        <div className='main-container'>          
-          <Aside messages={this.props.messages}/>
+        <div className='main-container'>   
+          <Aside users={this.props.users}/>
           <Main messages={this.props.messages} 
                 login={this.props.login}
                 sendCallback={this.props.sendCallback}

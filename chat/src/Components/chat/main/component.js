@@ -5,14 +5,27 @@ import Input from './InputComponent';
 
 class Main extends Component {
   constructor(props) {
-      super(props);
+      super(props);  
+      this.messagesEndRef = React.createRef();    
   }  
+
+  componentDidMount () {    
+    this.scrollToBottom();
+  }
+  
+  componentDidUpdate () {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom = () => {
+    this.messagesEndRef.current.scrollTop = this.messagesEndRef.current.scrollHeight;
+  }
 
   render() {   
     return (
-      <main>
+      <main>   
         <h1 className='account'>Hello {this.props.login}</h1>
-        <div className='chat'>                 
+        <div className='chat' ref={this.messagesEndRef}>                 
           {this.props.messages.map((item)=> {           
             return <MessageItem key={item.id} login={this.props.login} 
               msg={(
@@ -31,6 +44,7 @@ class Main extends Component {
       </main>         
     );
   }
+  
 }
 
 export default Main;

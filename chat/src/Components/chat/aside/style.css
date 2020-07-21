@@ -4,13 +4,24 @@ aside {
     background-color: rgb(206, 206, 206);
     color: rgb(65, 62, 62);    
 }
-.chat-users {
-    padding: 20px 20px 7px;
+.chatHeader {
+    padding: 16px 20px 15px;
+    display: flex;
+    justify-content: space-around;    
+    align-items: center;
+}
+.chat-users {    
     color: #fff;
     font-size: 1.5em;
     font-weight: 700;
     text-shadow: rgb(91, 116, 172) 3px 0;    
 }    
+img {
+    height: 3em;    
+}
+.counter {
+    margin: -1em 0;
+}
 ul {
     height: 85%;
     overflow-y: auto;
@@ -39,19 +50,18 @@ li {
     word-break: break-word;
 }
 
-@media screen and (max-width: 750px) and (min-width: 500px) {    
+@media screen and (max-width: 920px) and (min-width: 600px) {    
     .chat-users {
-        padding: 20px 8px 7px;
-        font-size: 1.1em;
+        padding: 0 10px;
+        font-size: 1.3em;
     }    
     li {   
         padding: 11px 0 0 16px;
     }
 }
-@media screen and (max-width: 499px) {    
+@media screen and (max-width: 599px) {    
     .chat-users {
-        padding: 20px 8px 7px;
-        font-size: 0.75em;
+        display: none;
     }    
     li {        
         padding: 11px 0 0 7px;
