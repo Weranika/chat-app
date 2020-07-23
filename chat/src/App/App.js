@@ -6,6 +6,7 @@ import ChatPage from '../Components/chat/component';
 import { Offline, Online } from "react-detect-offline";
 import Reconect from '../Components/disconnect/disconnect';
 import soundFile from '../Audio/ios_notification.mp3';
+const Favico = require('favico.js'); 
 
 
 class App extends React.Component {
@@ -14,8 +15,7 @@ class App extends React.Component {
     this.loginClick = this.loginClick.bind(this);       
     this.state = {isLoggedIn: true,                  
                   messages: [],
-                  newMsg: [],
-                  myMessage: '',
+                  unreadMsg: 0,
                   users: [],
                   visibility: true
                  };       
@@ -24,7 +24,8 @@ class App extends React.Component {
     }    
     else {
       this.state.login = ''};                      
-    this.sendMessage = this.sendMessage.bind(this);        
+    this.sendMessage = this.sendMessage.bind(this);      
+    this.favicon = new Favico({animation:'popFade'});
   }
 
   getConnection() {
@@ -67,31 +68,44 @@ class App extends React.Component {
 
   componentDidMount() {
     this.socket = this.getConnection();
-    
+    const setUnreadMsg = this.setUnreadMsg.bind(this);
+    const favicon = this.favicon;
     document.addEventListener( 'visibilitychange' , () =>
     {
      if (!document.hidden) {      
-       document.title = 'Chat App';     
-    }}, false );
+       document.title = 'Chat App';        
+       favicon.badge(' ', {bgColor : '#5CB85C', animation:'none'});
+       
+    } else {setUnreadMsg(0); }}, false );
   }
   
+
+  setUnreadMsg(state) {
+    this.state.unreadMsg = state;
+  }
+
   sendMessage(msg) {
     this.socket.send(JSON.stringify(msg));
   }
 
   setNewMsg() {
     if (document.hidden) {
-      (this.state.newMsg.length === 1)?      
-      document.title=`You have ${this.state.newMsg.length} new message!`:
-      document.title=`You have ${this.state.newMsg.length} new messages!`;
-    }
-  }
+      if (this.state.unreadMsg === 1) {
+        document.title=`You have 1 new message!`;
+        this.favicon.badge(1, {bgColor : '#d00', animation:'popFade'});
+      } else if (this.state.unreadMsg > 1) {
+        document.title=`You have ${this.state.unreadMsg} new messages!`;
+        this.favicon.badge(this.state.unreadMsg, {bgColor : '#d00', animation:'popFade'});
+      } 
+    } 
+  }   
 
   updateMessages(arrMsg) {    
     const allMsg = this.state.messages.concat(arrMsg);
+    const unreadMsg = this.state.unreadMsg + arrMsg.length;
     this.setState({
                   messages: allMsg,
-                  newMsg: arrMsg
+                  unreadMsg: unreadMsg
                   });  
   }  
 

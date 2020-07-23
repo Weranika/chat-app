@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import './style.css';
 import logo from './img/messagesIcon.png';
-import NotificationBadge from 'react-notification-badge';
-import {Effect} from 'react-notification-badge';
 
 class Aside extends Component {
   constructor(props) {
