@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './style.css';
 import MessageItem from './messageItem';
 import Input from './InputComponent';
+import PropTypes from 'prop-types';
 
 class Main extends Component {
   constructor(props) {
@@ -43,8 +44,13 @@ class Main extends Component {
         />
       </main>         
     );
-  }
-  
+  }  
+}
+
+Main.propTypes = { 
+  messages: PropTypes.array,
+  login: PropTypes.string,
+  sendCallback: PropTypes.func
 }
 
 export default Main;

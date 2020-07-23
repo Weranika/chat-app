@@ -8,7 +8,6 @@ import Reconect from '../Components/disconnect/disconnect';
 import soundFile from '../Audio/ios_notification.mp3';
 const Favico = require('favico.js'); 
 
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -77,8 +76,7 @@ class App extends React.Component {
        favicon.badge(' ', {bgColor : '#5CB85C', animation:'none'});
        
     } else {setUnreadMsg(0); }}, false );
-  }
-  
+  }  
 
   setUnreadMsg(state) {
     this.state.unreadMsg = state;

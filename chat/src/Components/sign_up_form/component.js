@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './style.css';
 import '../../images/cloud.png';
+import PropTypes from 'prop-types';
 
 class SignUp extends Component {
   constructor(props) {
@@ -34,7 +35,10 @@ class SignUp extends Component {
       </div>
     );
   }
+}
 
+SignUp.propTypes = {    
+  updateLogin: PropTypes.func
 }
 
 export default SignUp;

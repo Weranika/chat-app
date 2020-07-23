@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './style.css';
 import Aside from './aside/component';
 import Main from './main/component';
+import PropTypes from 'prop-types';
 
 class ChatPage extends Component {
   constructor(props) {
@@ -19,7 +20,13 @@ class ChatPage extends Component {
         </div>
     );
   }
+}
 
+ChatPage.propTypes = {    
+  users: PropTypes.array,
+  messages: PropTypes.array,
+  login: PropTypes.string,
+  sendCallback: PropTypes.func
 }
 
 export default ChatPage;

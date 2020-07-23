@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './style.css';
 import logo from './img/messagesIcon.png';
+import PropTypes from 'prop-types';
 
 class Aside extends Component {
   constructor(props) {
@@ -12,8 +13,7 @@ class Aside extends Component {
       <aside>
         <header className='chatHeader'>   
           <div>
-            <img src={logo} alt={"logo"}/>
-            {/* <NotificationBadge count={2} effect={Effect.SCALE} className='counter'/>    */}
+            <img src={logo} alt={"logo"}/>            
           </div>     
           <h4 className='chat-users'>Chat users</h4>
         </header>        
@@ -35,6 +35,10 @@ class Aside extends Component {
       </aside>        
     );
   }
+}
+
+Aside.propTypes = {    
+  users: PropTypes.array  
 }
 
 export default Aside;
