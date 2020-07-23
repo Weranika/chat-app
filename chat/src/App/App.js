@@ -5,20 +5,26 @@ import SignUp from '../Components/sign_up_form/component';
 import ChatPage from '../Components/chat/component';
 import { Offline, Online } from "react-detect-offline";
 import Reconect from '../Components/disconnect/disconnect';
+import soundFile from '../Audio/ios_notification.mp3';
+
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.loginClick = this.loginClick.bind(this);
-    this.noLoginClick = this.noLoginClick.bind(this);    
-    this.state = {isLoggedIn: false,
-                  login: '',
+    this.loginClick = this.loginClick.bind(this);       
+    this.state = {isLoggedIn: true,                  
                   messages: [],
+                  newMsg: [],
                   myMessage: '',
-                  users: []
-                 };    
-    this.socket = this.getConnection();
-    this.sendMessage = this.sendMessage.bind(this);           
+                  users: [],
+                  visibility: true
+                 };       
+    if (localStorage.getItem('login') !== null) {
+      this.state.login = localStorage.getItem('login')
+    }    
+    else {
+      this.state.login = ''};                      
+    this.sendMessage = this.sendMessage.bind(this);        
   }
 
   getConnection() {
@@ -26,6 +32,8 @@ class App extends React.Component {
     const messageUpdater = this.updateMessages.bind(this);
     const getUsers = this.getUsersFromArr.bind(this);    
     const reconect = this.getConnection.bind(this);
+    const playSound = this.playSound.bind(this);
+    const setNewMsg =this.setNewMsg.bind(this);
 
     socket.onmessage = function(event) {   
       messageUpdater(JSON.parse(event.data).reverse().map((item) => {
@@ -36,8 +44,10 @@ class App extends React.Component {
           id: item.id
         }        
       }));   
-
-      getUsers();      
+      
+      getUsers();   
+      playSound();   
+      setNewMsg();
     };
     
     socket.onclose = function(event) {      
@@ -55,16 +65,44 @@ class App extends React.Component {
     return socket;
   }
 
+  componentDidMount() {
+    this.socket = this.getConnection();
+    
+    document.addEventListener( 'visibilitychange' , () =>
+    {
+     if (!document.hidden) {      
+       document.title = 'Chat App';     
+    }}, false );
+  }
+  
   sendMessage(msg) {
     this.socket.send(JSON.stringify(msg));
   }
 
-  updateMessages(arrMsg) {
-    const allMsg = this.state.messages.concat(arrMsg);
-    this.setState({messages: allMsg});   
+  setNewMsg() {
+    if (document.hidden) {
+      (this.state.newMsg.length === 1)?      
+      document.title=`You have ${this.state.newMsg.length} new message!`:
+      document.title=`You have ${this.state.newMsg.length} new messages!`;
+    }
   }
 
-  getUsersFromArr() {    
+  updateMessages(arrMsg) {    
+    const allMsg = this.state.messages.concat(arrMsg);
+    this.setState({
+                  messages: allMsg,
+                  newMsg: arrMsg
+                  });  
+  }  
+
+  playSound() {
+    if (document.hidden) {
+      const audio = new Audio(soundFile);
+      audio.play();
+    }    
+  }
+
+    getUsersFromArr() {    
     const usersSet = new Set();
     this.state.messages.forEach(function(item) {
       usersSet.add(item.from);
@@ -74,24 +112,24 @@ class App extends React.Component {
   }
  
   loginClick(value) {
-    this.setState({isLoggedIn: true, login: value});
-    this.handleLogin(value);
+    if(value === '') {
+      alert('Please enter login');
+    } else {
+      localStorage.setItem('login', value);    
+      this.setState({login: value});
+    }    
   }
 
-  noLoginClick() {   
-    this.setState({isLoggedIn: false, login: ''});      
-  } 
-
-  handleLogin = (value) => {   
+  setLocalStorageLogin = (value) => {   
     localStorage.setItem('login', value);    
   };
-  
-  render() {     
-    const isLoggedIn = this.state.isLoggedIn;   
-    if (isLoggedIn) {            
+
+  render() {            
+    if (localStorage.getItem('login') !== '' && 
+        localStorage.getItem('login') !== null) {   
       return (
         <>
-          <Online>
+          <Online>    
             <ChatPage messages={this.state.messages} 
                         login={this.state.login}
                         sendCallback={this.sendMessage}
@@ -114,8 +152,7 @@ class App extends React.Component {
           </Offline>   
         </>
       );
-    }
-    
+    }    
   }  
 }
 
