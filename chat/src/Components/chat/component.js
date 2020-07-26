@@ -13,8 +13,7 @@ class ChatPage extends Component {
     return (      
         <div className='main-container'>   
           <Aside users={this.props.users}/>
-          <Main messages={this.props.messages} 
-                login={this.props.login}
+          <Main login={this.props.login}
                 sendCallback={this.props.sendCallback}
           />      
         </div>

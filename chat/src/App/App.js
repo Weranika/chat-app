@@ -6,6 +6,8 @@ import ChatPage from '../Components/chat/component';
 import { Offline, Online } from "react-detect-offline";
 import Reconect from '../Components/disconnect/disconnect';
 import soundFile from '../Audio/ios_notification.mp3';
+import { connect } from 'react-redux';
+import { addMsg } from '../actions';
 const Favico = require('favico.js'); 
 
 class App extends React.Component {
@@ -13,7 +15,7 @@ class App extends React.Component {
     super(props);
     this.loginClick = this.loginClick.bind(this);       
     this.state = {isLoggedIn: true,                  
-                  messages: [],
+                  //messages: [],
                   unreadMsg: 0,
                   users: [],
                   visibility: true
@@ -45,7 +47,7 @@ class App extends React.Component {
         }        
       }));   
       
-      getUsers();   
+      //getUsers();   
       playSound();   
       setNewMsg();
     };
@@ -99,10 +101,10 @@ class App extends React.Component {
   }   
 
   updateMessages(arrMsg) {    
-    const allMsg = this.state.messages.concat(arrMsg);
+    const dispatch = this.props.dispatch;    
     const unreadMsg = this.state.unreadMsg + arrMsg.length;
-    this.setState({
-                  messages: allMsg,
+    dispatch(addMsg(arrMsg));
+    this.setState({                 
                   unreadMsg: unreadMsg
                   });  
   }  
@@ -142,10 +144,9 @@ class App extends React.Component {
       return (
         <>
           <Online>    
-            <ChatPage messages={this.state.messages} 
-                        login={this.state.login}
-                        sendCallback={this.sendMessage}
-                        users={this.state.users}
+            <ChatPage login={this.state.login}
+                      sendCallback={this.sendMessage}
+                      users={this.state.users}
               />  
           </Online>      
           <Offline>
@@ -168,5 +169,4 @@ class App extends React.Component {
   }  
 }
 
-export default App;
-
+export default connect()(App)
