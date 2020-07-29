@@ -5,24 +5,24 @@ import SignUp from '../Components/sign_up_form/component';
 import ChatPage from '../Components/chat/component';
 import { Offline, Online } from "react-detect-offline";
 import Reconect from '../Components/disconnect/disconnect';
+import playSound from './playSound';
 import soundFile from '../Audio/ios_notification.mp3';
 import { connect } from 'react-redux';
-import { msgReducer, countUnreadMsg, resetUnreadMsgs, listOfUsers } from '../actions';
+import { msgReducer, countUnreadMsg, resetUnreadMsgs, listOfUsers, setLogin } from '../actions';
 const Favico = require('favico.js'); 
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    //this.loginClick = this.loginClick.bind(this);       
     this.dispatch = this.props.dispatch;   
     this.state = {isLoggedIn: true, 
                   visibility: true
-                 };       
+                 };    
+                    
     if (localStorage.getItem('login') !== null) {
-      this.state.login = localStorage.getItem('login')
+      this.dispatch(setLogin(localStorage.getItem('login')));
     }    
-    else {
-      this.state.login = ''};                      
+             
     this.sendMessage = this.sendMessage.bind(this);      
     this.favicon = new Favico({animation:'popFade'});
   }
@@ -30,8 +30,7 @@ class App extends React.Component {
   getConnection() {
     const socket = new WebSocket("ws://chat.shas.tel"); 
     const updateMessages = this.updateMessages.bind(this);
-    const reconect = this.getConnection.bind(this);
-    const playSound = this.playSound.bind(this);
+    const reconect = this.getConnection.bind(this);    
     const setTitleAndFavicon =this.setTitleAndFavicon.bind(this);
 
     socket.onmessage = function(event) {   
@@ -44,7 +43,7 @@ class App extends React.Component {
         }        
       }));   
 
-      playSound();   
+      playSound(soundFile);   
       setTitleAndFavicon();
     };
     
@@ -75,7 +74,7 @@ class App extends React.Component {
       } else {
         this.dispatch(resetUnreadMsgs());
       }
-    }, false );
+    }, false );   
   }    
 
   sendMessage(msg) {
@@ -102,30 +101,8 @@ class App extends React.Component {
     }) 
     this.dispatch(listOfUsers(usersList));
   }  
-
-  playSound() {
-    if (document.hidden) {
-      const audio = new Audio(soundFile);
-      audio.play();
-    }    
-  }    
  
-  // loginClick(value) {
-  //   if(value === '') {
-  //     alert('Please enter login');
-  //   } else {
-  //     localStorage.getItem('login');    
-  //     //this.setState({login: value});
-  //   }    
-  // }
-
-  // setLocalStorageLogin = (value) => {   
-  //   localStorage.setItem('login', value);    
-  // };
-
-  render() {            
-    // if (localStorage.getItem('login') !== '' && 
-    //     localStorage.getItem('login') !== null) {   
+  render() {               
     if (this.props.setLogin) {   
       return ( 
         <>

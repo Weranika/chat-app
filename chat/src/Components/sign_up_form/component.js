@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './style.css';
 import '../../images/cloud.png';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setLogin } from '../../actions';
 
@@ -45,8 +44,4 @@ class SignUp extends Component {
   }
 }
 
-const mapStateToProps = function(state) {
-  return {login: state.login}
-}
-
-export default connect(mapStateToProps)(SignUp)
+export default connect()(SignUp)

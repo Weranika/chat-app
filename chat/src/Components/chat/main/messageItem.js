@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
 
 class MessageItem extends Component {
     constructor(props) {
@@ -28,4 +30,8 @@ MessageItem.propTypes = {
   msg: PropTypes.object
 }
 
-export default MessageItem;
+const mapStateToProps = function(state) {
+  return {login: state.setLogin}
+}
+
+export default connect(mapStateToProps)(MessageItem);
