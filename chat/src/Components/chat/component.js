@@ -12,20 +12,11 @@ class ChatPage extends Component {
   render() {   
     return (      
         <div className='main-container'>   
-          <Aside users={this.props.users}/>
-          <Main login={this.props.login}
-                sendCallback={this.props.sendCallback}
-          />      
+          <Aside/>
+          <Main sendCallback={this.props.sendCallback}/>      
         </div>
     );
   }
-}
-
-ChatPage.propTypes = {    
-  users: PropTypes.array,
-  messages: PropTypes.array,
-  login: PropTypes.string,
-  sendCallback: PropTypes.func
 }
 
 export default ChatPage;

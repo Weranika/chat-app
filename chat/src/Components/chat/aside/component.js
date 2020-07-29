@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import './style.css';
 import logo from './img/messagesIcon.png';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 class Aside extends Component {
   constructor(props) {
-      super(props);     
+      super(props);       
   }
 
   render() {   
@@ -41,4 +42,8 @@ Aside.propTypes = {
   users: PropTypes.array  
 }
 
-export default Aside;
+const mapStateToProps = function(state) {
+  return {users: state.usersList};
+}
+
+export default connect(mapStateToProps)(Aside);

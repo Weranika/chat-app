@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import './style.css';
 import '../../images/cloud.png';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { setLogin } from '../../actions';
 
 class SignUp extends Component {
   constructor(props) {
       super(props);
+      this.dispatch = this.props.dispatch;  
 
       this.state = {
         login: '',
@@ -17,7 +20,12 @@ class SignUp extends Component {
   };
 
   updateLogin = (event) => {
-    this.props.updateLogin(this.state.login);
+    if (this.state.login === '') {
+      alert('Please enter login');
+    } else {       
+      localStorage.setItem('login', this.state.login);  
+      this.dispatch(setLogin(this.state.login)); 
+    }
   }
 
   render() {    
@@ -37,8 +45,8 @@ class SignUp extends Component {
   }
 }
 
-SignUp.propTypes = {    
-  updateLogin: PropTypes.func
+const mapStateToProps = function(state) {
+  return {login: state.login}
 }
 
-export default SignUp;
+export default connect(mapStateToProps)(SignUp)

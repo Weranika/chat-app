@@ -7,17 +7,15 @@ import { Offline, Online } from "react-detect-offline";
 import Reconect from '../Components/disconnect/disconnect';
 import soundFile from '../Audio/ios_notification.mp3';
 import { connect } from 'react-redux';
-import { addMsg } from '../actions';
+import { msgReducer, countUnreadMsg, resetUnreadMsgs, listOfUsers } from '../actions';
 const Favico = require('favico.js'); 
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.loginClick = this.loginClick.bind(this);       
-    this.state = {isLoggedIn: true,                  
-                  //messages: [],
-                  unreadMsg: 0,
-                  users: [],
+    //this.loginClick = this.loginClick.bind(this);       
+    this.dispatch = this.props.dispatch;   
+    this.state = {isLoggedIn: true, 
                   visibility: true
                  };       
     if (localStorage.getItem('login') !== null) {
@@ -31,14 +29,13 @@ class App extends React.Component {
 
   getConnection() {
     const socket = new WebSocket("ws://chat.shas.tel"); 
-    const messageUpdater = this.updateMessages.bind(this);
-    const getUsers = this.getUsersFromArr.bind(this);    
+    const updateMessages = this.updateMessages.bind(this);
     const reconect = this.getConnection.bind(this);
     const playSound = this.playSound.bind(this);
-    const setNewMsg =this.setNewMsg.bind(this);
+    const setTitleAndFavicon =this.setTitleAndFavicon.bind(this);
 
     socket.onmessage = function(event) {   
-      messageUpdater(JSON.parse(event.data).reverse().map((item) => {
+      updateMessages(JSON.parse(event.data).reverse().map((item) => {
         return {
           from: item.from,      
           time: item.time,
@@ -46,10 +43,9 @@ class App extends React.Component {
           id: item.id
         }        
       }));   
-      
-      //getUsers();   
+
       playSound();   
-      setNewMsg();
+      setTitleAndFavicon();
     };
     
     socket.onclose = function(event) {      
@@ -68,45 +64,43 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.socket = this.getConnection();
-    const setUnreadMsg = this.setUnreadMsg.bind(this);
-    const favicon = this.favicon;
+    this.socket = this.getConnection();    
+    const favicon = this.favicon;    
     document.addEventListener( 'visibilitychange' , () =>
     {
-     if (!document.hidden) {      
-       document.title = 'Chat App';        
-       favicon.badge(' ', {bgColor : '#5CB85C', animation:'none'});
-       
-    } else {setUnreadMsg(0); }}, false );
-  }  
-
-  setUnreadMsg(state) {
-    this.state.unreadMsg = state;
-  }
+      if (!document.hidden) {      
+        document.title = 'Chat App';        
+        favicon.badge(' ', {bgColor : '#5CB85C', animation:'none'});
+        
+      } else {
+        this.dispatch(resetUnreadMsgs());
+      }
+    }, false );
+  }    
 
   sendMessage(msg) {
     this.socket.send(JSON.stringify(msg));
   }
 
-  setNewMsg() {
+  setTitleAndFavicon() {
     if (document.hidden) {
-      if (this.state.unreadMsg === 1) {
+      if (this.props.unreadMsg === 1) {
         document.title=`You have 1 new message!`;
         this.favicon.badge(1, {bgColor : '#d00', animation:'popFade'});
-      } else if (this.state.unreadMsg > 1) {
-        document.title=`You have ${this.state.unreadMsg} new messages!`;
-        this.favicon.badge(this.state.unreadMsg, {bgColor : '#d00', animation:'popFade'});
+      } else if (this.props.unreadMsg > 1) {
+        document.title=`You have ${this.props.unreadMsg} new messages!`;
+        this.favicon.badge(this.props.unreadMsg, {bgColor : '#d00', animation:'popFade'});
       } 
     } 
   }   
 
-  updateMessages(arrMsg) {    
-    const dispatch = this.props.dispatch;    
-    const unreadMsg = this.state.unreadMsg + arrMsg.length;
-    dispatch(addMsg(arrMsg));
-    this.setState({                 
-                  unreadMsg: unreadMsg
-                  });  
+  updateMessages(arrMsg) {         
+    this.dispatch(msgReducer(arrMsg));
+    this.dispatch(countUnreadMsg(arrMsg.length));   
+    const usersList = arrMsg.map((item) => {
+      return item.from;
+    }) 
+    this.dispatch(listOfUsers(usersList));
   }  
 
   playSound() {
@@ -114,40 +108,29 @@ class App extends React.Component {
       const audio = new Audio(soundFile);
       audio.play();
     }    
-  }
-
-    getUsersFromArr() {    
-    const usersSet = new Set();
-    this.state.messages.forEach(function(item) {
-      usersSet.add(item.from);
-    });
-    const usersArr = Array.from(usersSet);    
-    this.setState({users: usersArr});   
-  }
+  }    
  
-  loginClick(value) {
-    if(value === '') {
-      alert('Please enter login');
-    } else {
-      localStorage.setItem('login', value);    
-      this.setState({login: value});
-    }    
-  }
+  // loginClick(value) {
+  //   if(value === '') {
+  //     alert('Please enter login');
+  //   } else {
+  //     localStorage.getItem('login');    
+  //     //this.setState({login: value});
+  //   }    
+  // }
 
-  setLocalStorageLogin = (value) => {   
-    localStorage.setItem('login', value);    
-  };
+  // setLocalStorageLogin = (value) => {   
+  //   localStorage.setItem('login', value);    
+  // };
 
   render() {            
-    if (localStorage.getItem('login') !== '' && 
-        localStorage.getItem('login') !== null) {   
-      return (
+    // if (localStorage.getItem('login') !== '' && 
+    //     localStorage.getItem('login') !== null) {   
+    if (this.props.setLogin) {   
+      return ( 
         <>
           <Online>    
-            <ChatPage login={this.state.login}
-                      sendCallback={this.sendMessage}
-                      users={this.state.users}
-              />  
+            <ChatPage sendCallback={this.sendMessage}/>  
           </Online>      
           <Offline>
             <Reconect/>
@@ -158,7 +141,7 @@ class App extends React.Component {
       return (
         <>
           <Online>
-            <SignUp updateLogin ={this.loginClick}/>       
+            <SignUp/>       
           </Online>
           <Offline>
             <Reconect/>
@@ -169,4 +152,10 @@ class App extends React.Component {
   }  
 }
 
-export default connect()(App)
+const mapStateToProps = function(state) {
+  return {unreadMsg: state.countUnreadMsg,
+          messages: state.msgReducer,
+          setLogin: state.setLogin}
+}
+
+export default connect(mapStateToProps)(App)

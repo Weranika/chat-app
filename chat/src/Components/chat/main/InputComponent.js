@@ -5,7 +5,7 @@ class Input extends Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.state = {myMessage: ''}
+        this.state = {myMessage: ''};
     }
 
     handleChange = (event) => {    
@@ -15,7 +15,7 @@ class Input extends Component {
     handleSubmit(event) {
       event.preventDefault();
       this.props.sendCallback({
-          from: this.props.login,
+          from: localStorage.getItem('login'),
           message: this.state.myMessage
       })     
       this.setState({myMessage: ''});
@@ -35,8 +35,7 @@ class Input extends Component {
     }
 }
 
-Input.propTypes = {   
-  login: PropTypes.string,
+Input.propTypes = {     
   sendCallback: PropTypes.func
 }
 
