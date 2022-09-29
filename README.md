@@ -7,13 +7,13 @@ JS, CSS, Webpack, Ract/Redux, GIT
 * React/Redux 
 * Connection WS based, used ws://st-chat.shas.tel as connection url.  
 * Nickname stored in LocalStorage and reused across app launches:   
-  save login and not enter to Chat page without it  
-* implement reconnection mechanism: 
-  after to 3sec;  
-* Add notifications for new messages: 
-  sound;  
-  title;  
-  favicon;  
+   -save login and not enter to Chat page without it  
+* implement reconnection mechanism:  
+   -after to 3sec;  
+* Add notifications for new messages:  
+   -sound;  
+   -title;  
+   -favicon;  
 * Display notification only when app is not visible   
 * separately handle cases when the app goes online/offline  
 * App properly work in latest stable chrome 
